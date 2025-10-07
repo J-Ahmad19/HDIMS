@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block content %}
+ Data Entry page for Hospitals/Departments 
+<section class="mb-4">
+  <h1 class="h2 mb-1">Facility Data Entry</h1>
+  <p class="text-muted mb-0">Enter and update data from Facility level to feed Sub-district, District, and State/UT roll-ups.</p>
+</section>
+
+<form id="entry-form" class="card shadow-sm">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-12 col-md-6">
+        <label for="state" class="form-label">State/UT</label>
+        <input type="text" class="form-control" id="state" required placeholder="e.g., Karnataka">
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="district" class="form-label">District</label>
+        <input type="text" class="form-control" id="district" required placeholder="e.g., Bengaluru Urban">
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="subDistrict" class="form-label">Sub-district</label>
+        <input type="text" class="form-control" id="subDistrict" required placeholder="e.g., Yelahanka">
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="facilityName" class="form-label">Facility Name</label>
+        <input type="text" class="form-control" id="facilityName" required placeholder="e.g., PHC Yelahanka">
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="facilityType" class="form-label">Facility Type</label>
+        <select id="facilityType" class="form-select" required>
+          <option value="">Select type</option>
+          <option>Hospital</option>
+          <option>Department</option>
+          <option>PHC</option>
+          <option>CHC</option>
+          <option>Sub-Centre</option>
+        </select>
+      </div>
+
+      <div class="col-12">
+        <hr class="my-2">
+      </div>
+
+      <div class="col-12 col-md-6">
+        <label for="programme" class="form-label">Programme</label>
+        <select id="programme" class="form-select" required>
+          <option value="">Select programme</option>
+          <option>Health & Family Welfare</option>
+          <option>National Health Programme</option>
+          <option>Maternal & Child Health</option>
+          <option>Communicable Diseases</option>
+          <option>Non-Communicable Diseases</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="indicator" class="form-label">Indicator</label>
+        <input type="text" id="indicator" class="form-control" required placeholder="e.g., OPD Visits">
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="value" class="form-label">Value</label>
+        <input type="number" min="0" step="1" id="value" class="form-control" required placeholder="e.g., 1200">
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="unit" class="form-label">Unit</label>
+        <input type="text" id="unit" class="form-control" placeholder="e.g., count">
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="month" class="form-label">Month</label>
+        <select id="month" class="form-select" required>
+          <option value="">Select </option>
+          <option>January</option>
+          <option>February</option>
+          <option>March</option>
+          <option>April</option>
+          <option>May</option>
+          <option>June</option>
+          <option>July</option>
+          <option>August</option>  
+          <option>September</option>
+          <option>October</option>
+          <option>November</option>
+          <option>December</option>
+        </select>
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="year" class="form-label">Year</label>
+        <select id="year" class="form-select" required>
+            <option value="">Select </option>
+            {% for y in range(2000, 2031) %}
+            <option>{{ y }}</option>
+            {% endfor %}
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer d-flex gap-2">
+    <input type="hidden" id="recordId">
+    <button type="submit" class="btn btn-primary">Save Record</button>
+    <button type="reset" id="resetBtn" class="btn btn-outline-secondary">Reset</button>
+  </div>
+</form>
+
+<section class="mt-4">
+  <div class="d-flex align-items-center justify-content-between mb-2">
+    <h2 class="h5 mb-0">Local Records</h2>
+    <div class="d-flex gap-2">
+      <button id="downloadCsvBtn" class="btn btn-sm btn-outline-primary">Export CSV</button>
+      <button id="clearAllBtn" class="btn btn-sm btn-outline-danger">Clear All</button>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-sm table-striped align-middle" aria-describedby="recordsHelp">
+      <thead class="table-light">
+        <tr>
+          <th>State/UT</th>
+          <th>District</th>
+          <th>Sub-district</th>
+          <th>Facility</th>
+          <th>Type</th>
+          <th>Programme</th>
+          <th>Indicator</th>
+          <th>Value</th>
+          <th>Month</th>
+          <th>Year</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="records-table-body"></tbody>
+    </table>
+    <div id="recordsHelp" class="form-text"></div>
+  </div>
+</section>
+{% endblock %}

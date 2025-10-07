@@ -1,0 +1,249 @@
+/* Minimal custom styles for readability and mobile spacing */
+:root {
+  --hdims-accent: #0d6efd; /* Bootstrap primary */
+  --hdims-muted: #6c757d;
+}
+
+body {
+  background-color: #f8f9fa;
+}
+
+.card {
+  border-radius: 0.5rem;
+}
+
+.table thead th {
+  white-space: nowrap;
+}
+
+@media (max-width: 576px) {
+  .display-6 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Introduce a cohesive color system and refined UI styles */
+:root {
+  /* Brand and palette (max 5 total) */
+  --brand: #0f766e; /* primary brand: teal */
+  --text: #0f172a; /* neutral: near-black */
+  --muted: #64748b; /* neutral: slate-ish */
+  --bg: #f8fafc; /* neutral: soft background */
+  --accent: #dc2626; /* accent: red for destructive */
+
+  /* Legacy support (keep existing vars mapped) */
+  --hdims-accent: var(--brand);
+  --hdims-muted: var(--muted);
+
+  /* Surfaces and radii */
+  --surface: #ffffff;
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --radius-sm: 8px;
+
+  /* Shadows */
+  --shadow-soft: 0 2px 12px rgba(2, 6, 23, 0.06);
+  --shadow-medium: 0 6px 18px rgba(2, 6, 23, 0.08);
+
+  /* Borders */
+  --border: #e5e7eb;
+}
+
+/* Base */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+/* Typography refinements */
+h1,
+.h1 {
+  letter-spacing: -0.01em;
+  font-weight: 700;
+}
+h2,
+.h2 {
+  letter-spacing: -0.005em;
+  font-weight: 700;
+}
+h3,
+.h3 {
+  letter-spacing: 0;
+  font-weight: 600;
+}
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+  font-weight: 600;
+}
+.text-muted {
+  color: var(--muted) !important;
+}
+
+/* Navbar: use brand color with better contrast */
+.navbar {
+    /* 1. Set the element to be sticky */
+    position: sticky; 
+    
+    /* 2. Define where it should stick */
+    top: 0; 
+    
+    /* Optional: Ensure it stays above other content */
+    z-index: 1000; 
+
+    /* Add basic styling */
+    width: 100%;
+   
+    padding: 10px 0;
+    font-size: 18px;
+    
+}
+.navbar-dark.bg-primary {
+  background-color: var(--brand) !important;
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0));
+  box-shadow: var(--shadow-soft);
+}
+.navbar-dark .navbar-brand {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.navbar-dark .nav-link {
+  color: rgba(255, 255, 255, 0.9);
+}
+.navbar-dark .nav-link:hover,
+.navbar-dark .nav-link.active {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Cards */
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  background-color: var(--surface);
+}
+.card .card-footer {
+  background: linear-gradient(180deg, #ffffff, #fafafa);
+  border-top: 1px solid var(--border);
+  border-bottom-left-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+}
+
+/* Buttons (primary and outline) */
+.btn-primary {
+  background-color: var(--brand);
+  border-color: var(--brand);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset;
+}
+.btn-primary:hover {
+  background-color: #0b5f59;
+  border-color: #0b5f59;
+}
+.btn-outline-primary {
+  color: var(--brand);
+  border-color: var(--brand);
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+}
+.btn-outline-primary:hover {
+  background-color: rgba(15, 118, 110, 0.08);
+  border-color: var(--brand);
+}
+.btn-outline-danger {
+  color: var(--accent);
+  border-color: var(--accent);
+  border-radius: var(--radius-sm);
+}
+.btn-outline-danger:hover {
+  background-color: rgba(220, 38, 38, 0.08);
+  border-color: var(--accent);
+}
+
+/* Forms */
+.form-label {
+  color: var(--text);
+  font-weight: 600;
+  font-size: 18px;
+}
+.form-control,
+.form-select {
+  border-radius: var(--radius-md);
+  border-color: var(--border);
+  background-color: #ffffff;
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 0.2rem rgba(15, 118, 110, 0.15);
+}
+.form-text {
+  color: var(--muted);
+}
+
+/* Tables */
+.table {
+  --bs-table-striped-bg: #f6f8fb;
+  --bs-table-striped-color: var(--text);
+  --bs-table-hover-bg: #eef2f7;
+  --bs-table-hover-color: var(--text);
+  border-color: var(--border);
+}
+.table thead th {
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.75rem;
+  color: var(--muted);
+  background-color: #f3f6fb;
+  border-bottom: 1px solid var(--border);
+  font-size: 17px;
+}
+.table tbody td {
+  vertical-align: middle;
+}
+.table-responsive {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  background-color: var(--surface);
+  padding: 0.25rem;
+}
+
+/* Stats cards */
+.display-6 {
+  font-weight: 700;
+}
+@media (max-width: 576px) {
+  .display-6 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Footer */
+footer {
+  background-color: #ffffff;
+  border-top: 1px solid var(--border);
+}
+footer .text-muted {
+  color: var(--muted) !important;
+}
+
+/* Subtle utility */
+.shadow-soft {
+  box-shadow: var(--shadow-soft);
+}
+.rounded-md {
+  border-radius: var(--radius-md);
+}
+.rounded-lg {
+  border-radius: var(--radius-lg);
+}

@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block content %}
+ Super Admin Dashboard for filtering and aggregation 
+<section class="mb-3">
+  <h1 class="h2 mb-1">Super Admin Dashboard</h1>
+  <p class="text-muted mb-0">View aggregated performance across Facility → Sub-district → District → State/UT from local entries.</p>
+</section>
+
+<div class="card shadow-sm mb-3">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-12 col-md-3">
+        <label for="filterState" class="form-label">State/UT</label>
+        <select id="filterState" class="form-select">
+          <option value="">All</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-3">
+        <label for="filterDistrict" class="form-label">District</label>
+        <select id="filterDistrict" class="form-select">
+          <option value="">All</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-3">
+        <label for="filterSubDistrict" class="form-label">Sub-district</label>
+        <select id="filterSubDistrict" class="form-select">
+          <option value="">All</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-3">
+        <label for="filterFacilityType" class="form-label">Facility Type</label>
+        <select id="filterFacilityType" class="form-select">
+          <option value="">All</option>
+          <option>Hospital</option>
+          <option>Department</option>
+          <option>PHC</option>
+          <option>CHC</option>
+          <option>Sub-Centre</option>
+        </select>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <label for="filterProgramme" class="form-label">Programme</label>
+        <select id="filterProgramme" class="form-select">
+          <option value="">All</option>
+          <option>Health & Family Welfare</option>
+          <option>National Health Programme</option>
+          <option>Maternal & Child Health</option>
+          <option>Communicable Diseases</option>
+          <option>Non-Communicable Diseases</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="filterMonth" class="form-label">Month</label>
+        <select id="filterMonth" class="form-select">
+          <option value="">All</option>
+        </select>
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="filterYear" class="form-label">Year</label>
+        <select id="filterYear" class="form-select">
+          <option value="">All</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-3 d-flex align-items-end">
+        <button id="exportFilteredBtn" class="btn btn-outline-primary w-100">Export Filtered CSV</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-md-3">
+    <div class="card text-center h-100">
+      <div class="card-body">
+        <div class="text-muted small">Total Records</div>
+        <div id="statTotalRecords" class="display-6">0</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card text-center h-100">
+      <div class="card-body">
+        <div class="text-muted small">Unique Facilities</div>
+        <div id="statFacilities" class="display-6">0</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card text-center h-100">
+      <div class="card-body">
+        <div class="text-muted small">Sum of Values</div>
+        <div id="statSum" class="display-6">0</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card text-center h-100">
+      <div class="card-body">
+        <div class="text-muted small">Avg per Record</div>
+        <div id="statAvg" class="display-6">0</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-sm table-striped align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>State/UT</th>
+        <th>District</th>
+        <th>Sub-district</th>
+        <th>Facility</th>
+        <th>Type</th>
+        <th>Programme</th>
+        <th>Indicator</th>
+        <th>Value</th>
+        <th>Month</th>
+        <th>Year</th>
+      </tr>
+    </thead>
+    <tbody id="admin-table-body"></tbody>
+  </table>
+</div>
+{% endblock %}
