@@ -5,8 +5,16 @@ import pymysql
 localserver = True
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:@localhost:3306/HDIMS"
+if os.environ.get("DATABASE_URL"):
+    # If DATABASE_URL exists (i.e., deployed on Render), use it
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL").replace("mysql://", "mysql+pymysql://")
+    localserver = False
+else:
+    # Fallback to the local setup for development
+    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:@localhost:3306/HDIMS"
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 
 db = SQLAlchemy(app)
 
