@@ -23,7 +23,7 @@ if DATABASE_URL:
 else:
     # Fallback to the local setup for development
     # Note: Using the simple format prevents the SQLAlchemy ValueError
-    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:@192.168.1.3/HDIMS"
+    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:@127.0.0.1/HDIMS"
     print("Using Local Database URI (Development Mode).")
 
 # --------------------------------------------------------------------------
