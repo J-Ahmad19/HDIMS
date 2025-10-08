@@ -23,7 +23,8 @@ if DATABASE_URL:
 else:
     # Fallback to the local setup for development
     # Note: Using the simple format prevents the SQLAlchemy ValueError
-    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:@127.0.0.1/HDIMS"
+    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:hKWcMhrDMbrGjtBMBLVAeZFAAitgEATS@caboose.proxy.rlwy.net:45189/railway"
+
     print("Using Local Database URI (Development Mode).")
 
 # --------------------------------------------------------------------------
@@ -34,7 +35,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
-class User(db.Model):
+class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(50), nullable=False)
@@ -55,12 +56,12 @@ def login():
         password = request.form.get("password")
         usertype = request.form.get("usertype")
         print(username, password, usertype)
-        user = User.query.filter_by(username=username, password=password, usertype=usertype).first()
+        users = Users.query.filter_by(username=username, password=password, usertype=usertype).first()
 
-        if user:
-            if user.usertype == "SUPER ADMIN":
+        if users:
+            if users.usertype == "SUPER ADMIN":
                 return redirect(url_for("admin"))
-            elif user.usertype == "FACILITY DATA ENTRY OPERATOR":
+            elif users.usertype == "FACILITY DATA ENTRY OPERATOR":
                 return redirect(url_for("index"))
         else:
             return render_template("login.html", error="Invalid credentials. Please try again.")
