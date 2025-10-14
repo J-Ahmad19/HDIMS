@@ -150,6 +150,7 @@
     <table class="table table-sm table-striped align-middle" aria-describedby="recordsHelp">
       <thead class="table-light">
         <tr>
+          <th>S.No</th>
           <th>State/UT</th>
           <th>District</th>
           <th>Sub-district</th>
@@ -166,6 +167,7 @@
       <tbody id="records-table-body" class="text-center">
        {%for record in query:%} 
         <tr>
+            <td>{{ loop.index }}</td>
             <td>{{ record.states }}</td>
             <td>{{ record.district }}</td>
             <td>{{ record.sdistrict }}</td>
