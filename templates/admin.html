@@ -45,6 +45,7 @@
       </select>
     </div>
 </form>
+
       <div class="col-12 col-md-3">
         <label for="filterFacilityType" class="form-label">Facility Type</label>
         <select id="filterFacilityType" class="form-select">
@@ -96,9 +97,47 @@
             {% endfor %}
         </select>
       </div>
+      
       <div class="col-12 col-md-3 d-flex align-items-end">
-        <button id="exportFilteredBtn" class="btn btn-outline-primary w-100">Export Filtered CSV</button>
-      </div>
+      
+        <button type="button"  id="exportFilteredBtn" 
+                class="btn btn-outline-primary w-100" 
+                onclick="submitViewRecords()">
+          View records
+        </button>
+      
+    </div>
+      <script>
+        function submitViewRecords() {
+            // 1. Get the values from the existing dropdowns
+            const state = document.getElementById('filterState').value || 'All';
+            const district = document.getElementById('filterDistrict').value || 'All';
+            const subdistrict = document.getElementById('filterSubDistrict').value || 'All';
+            const ftype = document.getElementById('filterFacilityType').value || 'All';
+            const month = document.getElementById('filterMonth').value || 'All';
+            const year = document.getElementById('filterYear').value || 'All';
+
+            
+            // NOTE: You must get the values for ALL your filter fields here (ftype, programme, etc.)
+
+            // Example for a Programme filter (assuming ID is filterProgramme and name is programme):
+            const programme = document.getElementById('filterProgramme').value || 'All';
+            
+            // 2. Construct the GET URL with the parameters
+            const url = `/show_admin_records?` +
+                        `states=${state}&` +
+                        `district=${district}&` +
+                        `sdistrict=${subdistrict}&` +
+                        `programme=${programme}&` +
+                        `ftype=${ftype}&` +
+                        `month=${month}&` +
+                        `year=${year}`;
+            console.log("Navigating to URL:", url);
+            // 3. Navigate to the new URL
+            window.location.href = url;
+        }
+        </script>
+      
     </div>
   </div>
 </div>
@@ -142,19 +181,38 @@
   <table class="table table-sm table-striped align-middle">
     <thead class="table-light">
       <tr>
+        <th>S.No</th>
         <th>State/UT</th>
         <th>District</th>
         <th>Sub-district</th>
         <th>Facility</th>
         <th>Type</th>
         <th>Programme</th>
-        <th>Indicator</th>
-        <th>Value</th>
+        <th>No. of Beneficiaries</th>
+        <th>Total amt. claimed</th>
         <th>Month</th>
         <th>Year</th>
       </tr>
     </thead>
-    <tbody id="admin-table-body"></tbody>
+    <tbody id="admin-table-body" class="text-center">
+      {%for record in query:%} 
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ record.states }}</td>
+            <td>{{ record.district }}</td>
+            <td>{{ record.sdistrict }}</td>
+            <td>{{ record.fname }}</td>
+            <td>{{ record.ftype }}</td>
+            <td>{{ record.programme }}</td>
+            <td>{{ record.beneficiaries }}</td>
+            <td>{{ record.amt_allotted }}</td>
+            <td>{{ record.month }}</td>
+            <td>{{ record.year }}</td>
+            <td class="text-end">
+            </td>
+          <tr>
+        {%endfor%}
+    </tbody>
   </table>
 </div>
 {% endblock %}

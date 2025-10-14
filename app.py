@@ -186,6 +186,8 @@ def admin():
         selected_district=selected_district,
         selected_subdistrict=selected_subdistrict,
     )
+    
+    
 
 
 
@@ -298,6 +300,85 @@ def show_records():
             sql_query = text("SELECT * FROM facility")
             query = connection.execute(sql_query)
             return render_template("index.html", page="entry", query=query)
+        
+@app.route("/show_admin_records", methods=["GET"])
+def show_admin_records():
+    
+    
+  # Helper function to correctly map empty string from HTML to 'All' for SQL
+    def get_filter_value(param_name):
+        # Get the value, or 'All' if parameter is missing
+        value = request.args.get(param_name, 'All')
+        # If the value is an empty string (from <option value="">), treat it as 'All'
+        return 'All' if value == '' else value
+
+    # 2. Get and clean filter values
+    state_filter = get_filter_value('states')
+    district_filter = get_filter_value('district')
+    sdistrict_filter = get_filter_value('sdistrict')
+    ftype_filter = get_filter_value('ftype')
+    programme_filter = get_filter_value('programme')
+    month_filter = get_filter_value('month')
+    year_filter = get_filter_value('year')
+    
+    print(state_filter, district_filter, sdistrict_filter, ftype_filter, programme_filter, month_filter, year_filter)
+
+    # 3. Construct the dynamic SQL query for the detailed records table
+    #    The filter logic is: (column = :value OR :value = 'All')
+    #    The user email filter is mandatory for security.
+    sql_query_text = """
+        SELECT
+            states,
+            district,
+            sdistrict,
+            ftype,
+            programme,
+            beneficiaries ,
+            amt_allotted ,
+            month,
+            year
+        FROM
+            facility
+        WHERE
+           
+            
+            
+            (states = :state_filter OR :state_filter = 'All') AND
+            (district = :district_filter OR :district_filter = 'All') AND
+            (sdistrict = :sdistrict_filter OR :sdistrict_filter = 'All') AND
+            (ftype = :ftype_filter OR :ftype_filter = 'All') AND
+            (programme = :programme_filter OR :programme_filter = 'All') AND
+            (month = :month_filter OR :month_filter = 'All') AND
+            (year = :year_filter OR :year_filter = 'All')
+        
+    """
+    
+    # Define the parameters to pass to the query
+    params = {
+        'state_filter': state_filter,
+        'district_filter': district_filter,
+        'sdistrict_filter': sdistrict_filter,
+        'ftype_filter': ftype_filter,
+        'programme_filter': programme_filter,
+        'month_filter': month_filter,
+        'year_filter': year_filter
+    }
+
+    with db.engine.connect() as connection:
+        with connection.begin():
+            sql_query = text(sql_query_text)
+            # Execute the query with the parameters
+            query = connection.execute(sql_query, params)
+            
+            # Note: You would typically run a separate aggregate query here for the top four boxes
+            # But for simplicity, we'll just return the detailed query for now.
+            
+            return render_template(
+                "admin.html", 
+                page="admin", 
+                query=query
+            )
+    
 # --------------------------
 # MAIN DRIVER
 # --------------------------
