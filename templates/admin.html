@@ -1,32 +1,50 @@
 {% extends "base.html" %}
 {% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>
+        {% endfor %}
+      {% endif %}
+  {% endwith %}
  Super Admin Dashboard for filtering and aggregation 
 <section class="mb-3">
   <h1 class="h2 mb-1">Super Admin Dashboard</h1>
   <p class="text-muted mb-0">View aggregated performance across Facility → Sub-district → District → State/UT from local entries.</p>
 </section>
-
-<div class="card shadow-sm mb-3">
-  <div class="card-body">
-    <div class="row g-3">
-      <div class="col-12 col-md-3">
-        <label for="filterState" class="form-label">State/UT</label>
-        <select id="filterState" class="form-select">
-          <option value="">All</option>
-        </select>
-      </div>
-      <div class="col-12 col-md-3">
-        <label for="filterDistrict" class="form-label">District</label>
-        <select id="filterDistrict" class="form-select">
-          <option value="">All</option>
-        </select>
-      </div>
-      <div class="col-12 col-md-3">
-        <label for="filterSubDistrict" class="form-label">Sub-district</label>
-        <select id="filterSubDistrict" class="form-select">
-          <option value="">All</option>
-        </select>
-      </div>
+<form method="POST" >
+  <div class="card shadow-sm mb-3">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-12 col-md-3">
+          <label for="filterState" class="form-label">State/UT</label>
+          <select id="filterState" class="form-select" name="state" onchange="this.form.submit()"> <option value="">All</option>
+              {% for state in states %}
+                <option value="{{ state }}" {% if state == selected_state %}selected{% endif %}>{{ state }}</option>
+              {% endfor %}
+          </select>
+        </div>
+        <div class="col-12 col-md-3">
+          <label for="filterDistrict" class="form-label">District</label>
+          <select id="filterDistrict" class="form-select" name="district" onchange="this.form.submit()"> <option value="">All</option>
+              {% for district in districts %}
+                <option value="{{ district }}" {% if district == selected_district %}selected{% endif %}>{{ district }}</option>
+              {% endfor %}
+          </select>
+        </div>
+    <div class="col-12 col-md-3">
+      <label for="filterSubDistrict" class="form-label">Sub-district</label>
+      <select id="filterSubDistrict" class="form-select" name="subdistrict"> <option value="">All</option>
+        {% for sd in subdistricts %}
+        <option value="{{ sd }}" {% if sd == selected_subdistrict %}selected{% endif %}>{{ sd }}</option>
+        {% endfor %}
+      </select>
+    </div>
+</form>
       <div class="col-12 col-md-3">
         <label for="filterFacilityType" class="form-label">Facility Type</label>
         <select id="filterFacilityType" class="form-select">
@@ -55,12 +73,27 @@
         <label for="filterMonth" class="form-label">Month</label>
         <select id="filterMonth" class="form-select">
           <option value="">All</option>
+          <option>January</option>
+          <option>February</option>
+          <option>March</option>
+          <option>April</option>
+          <option>May</option>
+          <option>June</option>
+          <option>July</option>
+          <option>August</option>  
+          <option>September</option>
+          <option>October</option>
+          <option>November</option>
+          <option>December</option>
         </select>
       </div>
       <div class="col-6 col-md-3">
         <label for="filterYear" class="form-label">Year</label>
         <select id="filterYear" class="form-select">
           <option value="">All</option>
+          {% for y in range(2000, 2031) %}
+            <option>{{ y }}</option>
+            {% endfor %}
         </select>
       </div>
       <div class="col-12 col-md-3 d-flex align-items-end">
