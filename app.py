@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for,flash, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user,login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from data import india_data
 import pymysql
@@ -151,6 +151,7 @@ def login():
 
 
 
+
     
 # --------------------------
 # ADMIN DASHBOARD
@@ -158,6 +159,10 @@ def login():
 @app.route("/admin", methods=["GET", "POST"])
 @login_required
 def admin():
+    if current_user.usertype != "SUPER ADMIN":
+        flash("Access denied: Admins only.", "danger")
+        return redirect(url_for("login"))
+    
     selected_state = None
     selected_district = None
     selected_subdistrict = None
@@ -195,6 +200,7 @@ def admin():
 # DATA ENTRY PAGE
 # --------------------------
 @app.route("/data_entry", methods=["GET", "POST"])
+@login_required
 def index():
     # Variables for dropdowns (using names that will be passed to template)
     selected_state = None
@@ -293,15 +299,17 @@ def index():
         selected_subdistrict=selected_subdistrict,
     )
 @app.route("/show_records",methods=["GET"])
+@login_required
 def show_records():
     em=current_user.email
     with db.engine.connect() as connection:
         with connection.begin():
-            sql_query = text("SELECT * FROM facility")
+            sql_query = text("SELECT * FROM facility ORDER BY states ASC")
             query = connection.execute(sql_query)
             return render_template("index.html", page="entry", query=query)
         
 @app.route("/show_admin_records", methods=["GET"])
+@login_required
 def show_admin_records():
     
     
@@ -383,4 +391,7 @@ def show_admin_records():
 # MAIN DRIVER
 # --------------------------
 if __name__ == "__main__":
+    with app.app_context():
+        # ENSURE ALL TABLES ARE CREATED IN YOUR DATABASE
+        db.create_all()
     app.run(debug=True,port=8000)
